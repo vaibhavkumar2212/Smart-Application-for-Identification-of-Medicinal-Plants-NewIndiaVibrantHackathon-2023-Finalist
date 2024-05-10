@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+
+{% block home %}
+    <li class="nav-item">
+      <a class="nav-link" href="/">{{content['home']}} <span class="sr-only"></span></a>
+    </li>
+
+{% endblock %}
+
+
+{% block profile %}
+
+     <li class="nav-item active">
+            <a class="nav-link" href="/profile"> {{content['profile']}}</a>
+          </li>
+
+{% endblock %}
+
+{% block content %}
+<!-- 
+<a id="downloadButton" download="qrcode.png" href="#" onclick="generateQRCode('YourSpecificRoute')">Download QR Code</a>
+<img id="qrcode" alt="QR Code will appear here" /> -->
+
+  <section style="background-color: #BAE8B9;"  id="profilemains" class="plant_section layout_padding">
+    <div class="container">
+
+
+        <div class="row">
+       <div class="col-md-6"> </div>
+ <div class="col-md-6"> <a id="downloadBtna"  download><button id="downloadBtn" class="btn btn-primary"><i class="fa fa-qrcode" aria-hidden="true"></i></button></a></div>
+
+            <div class="col-md-3">
+               
+              <div class="plant-card">
+                <img class="plant-image" src="{{url_for('static', filename=plant_info['image_path']) }}" alt="">
+            </div>
+          </div>
+
+            <div class="col-md-6">
+                <div class="plant-card">
+
+                    <h2>{{plant_info['common_name']}}</h2>
+                    <p><strong>   {{content['profile_columns']['scientific_name_column']}}:</strong> {{plant_info['scientific_name']}}</p>
+                    <p><strong> {{content['profile_columns']['family_column']}}:</strong> {{plant_info['family']}}</p>
+                    <p><strong> {{content['profile_columns']['place_column']}}:</strong>{{plant_info['places_found']}}</p>
+                    <p><strong>{{content['profile_columns']['compound_column']}}:</strong>
+
+
+                        {% for i in plant_info['compounds'] %}
+
+
+                          <span class="badge badge-info">{{i}}</span>
+
+                              
+                        {% endfor %}
+
+
+                      
+                    </p>
+                      <p><strong>{{content['profile_columns']['medicine_column']}}:</strong>
+
+
+                        {% for i in plant_info['medicines'] %}
+
+
+                          <span class="badge badge-info">{{i}}</span>
+
+                              
+                        {% endfor %}
+
+                        
+
+                      
+                    </p>
+                    <p><strong>{{content['profile_columns']['morphological_appearance_column']}}:</strong>
+                  <br> 
+                    <strong>{{content['profile_columns']['color_column']}}</strong>:{{plant_info['color']}}<br><strong> {{content['profile_columns']['size_column']}}</strong>:{{plant_info['size']}} <br><strong>{{content['profile_columns']['shape_column']}}</strong>:{{plant_info['color']}} <br> </p>
+                   
+                </div>
+            </div>
+
+               <div class="col-md-3">
+                <div class="plant-card">
+                    <h2>{{content['profile_columns']['map_column']}}</h2>
+                    <div id="map"></div>
+               
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+          
+      </div>
+    </div>
+
+
+    </div>
+  </section>
+
+
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+     $(document).ready(function() {
+        $(".dropdown").hide();
+    });
+
+
+  var cities ={{ plant_info['coordinate']|tojson|safe }};
+  var map = L.map('map').setView([20.5937, 78.9629], 4);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  cities.forEach(function(city) {
+    var marker = L.marker([city.lat, city.lon]).addTo(map);
+    marker.bindPopup("<b>" + city.name + "</b>").openPopup();
+  });
+
+
+
+
+
+
+document.getElementById('downloadBtn').addEventListener('click', function() {
+  // Get the current window location
+  var currentUrl = window.location.href;
+
+  // Send a POST request to the Flask server
+  $.ajax({
+    type: 'POST',
+    url: '/qrcode',
+    data: JSON.stringify({ url: currentUrl }),
+    contentType: 'application/json',
+    success: function(response) {
+      // Handle the response (e.g., display the image)
+      console.log(response['path']);
+      $('#downloadBtna').attr('href','/download_image');
+      $("#downloadBtna")[0].click();
+      toastr.success(response['message']);
+
+    },
+    error: function(error) {
+      console.error('Error:', error);
+    }
+  });
+});
+
+
+</script>
+
+{% endblock %}
+

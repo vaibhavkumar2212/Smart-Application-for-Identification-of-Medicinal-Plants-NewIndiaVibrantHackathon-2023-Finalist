@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+
+{% block home %}
+    <li class="nav-item active">
+      <a id="home" class="nav-link" href="/">{{content['home']}} <span class="sr-only">(current)</span></a>
+    </li>
+
+{% endblock %}
+
+{% block profile %}
+
+   <li class="nav-item">
+      <a id="profile" class="nav-link" href="/profile"> {{content['profile']}}</a>
+    </li>
+
+{% endblock %}
+
+
+{% block about %}
+  <li class="nav-item">
+    <a id="about" class="nav-link" href="#aboutmain"> {{content['about']}}</a>
+  </li>
+{% endblock %}
+
+
+{% block content %}
+
+
+    
+  <section style="background-color: #BAE8B9;"  id="profile" class="plant_section layout_padding">
+ 
+
+
+    <div class="container">
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        
+        </div>
+    </div>
+</div>
+
+
+      <div class="heading_container heading_center">
+        <p id="profile_content"style="color:black; font-size: 30px;"><strong>{{content['profile_content']}}</p>
+      </div>
+          <div class="row">
+            <!-- {{plant_info_all}} -->
+
+              {% for i in plant_info_all %}
+
+               <div class="col-sm-6 col-md-4 col-lg-3">
+                  <div class="box">
+                  
+                    <div class="img-box">
+                      <img href="/profile?plant_name={{i['plant_username']}}&language={{i['language_id']}}" src="{{url_for('static', filename=i['image_path']) }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <a href="/profile?plant_name={{i['plant_username']}}&language={{i['language_id']}}">
+                      {{i['part_name']}}
+                      </a>
+                   
+                    </div>
+                  </div>
+                </div>
+
+                                
+                          {% endfor %}
+                </div>
+              
+        
+    </div>
+  </section>
+
+  <!-- end plant section -->
+
+  <!-- about section -->
+<br>
+<br>
+  <section id="aboutmain" class="about_section layout_padding-bottom">
+    <div class="container  ">
+      <div class="row">
+        <div class="col-md-5 ">
+          <div class="img-box">
+            <img src="static/images/logo.jpeg" alt="">
+          </div>
+        </div>
+        <div class="col-md-1 ">
+         
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container ">
+        <p id="about_head" style="color:black; font-size: 30px;"><strong>{{content['about_head']}}</strong></p>
+        <hr color="green" width="100%">
+       <hr>
+      </div>
+            <p id="about_content">
+              {{content['about_content']}}
+            </p>
+     
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+
+{% endblock %}
+
+
+
+

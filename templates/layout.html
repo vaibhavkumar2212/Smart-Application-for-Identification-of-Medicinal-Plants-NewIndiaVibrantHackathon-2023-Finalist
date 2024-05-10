@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="">
+
+  <title> Herbal Synergy </title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+ <!-- Modal-->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/css/bootstrap-modal.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" /> -->
+
+<!-- Include the Toastr CSS file -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+  <!-- font awesome style -->
+  <link href="{{url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="{{url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <header>
+    
+        <div class="row">
+          <div class="col-12">
+            <div class="custom-div">
+
+
+                     
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="/">
+              <img src="{{url_for('static', filename='images/logo.jpeg') }}" alt="Herbal Synergy" width="130" height="100">
+               <figcaption style="color:black;">&nbsp;Herbal Synergy</figcaption>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav  ">
+              
+
+
+
+              {% block home %} {% endblock %}
+
+              <!-- {% block profile %} {% endblock %} -->
+
+              {% block about %} {% endblock %}
+             
+            &nbsp;&nbsp;
+             
+                <form  class="form-inline my-2 my-lg-0">
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{content['lan']}}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div id="languageSelect">
+
+                  {% for i in language %}
+
+                   <a  href="?language={{i["id"]}}" class="dropdown-item" data-id={{ i["id"] }}> {{ i['name'] }}</a>
+
+                        
+                  {% endfor %}
+
+                </div>
+       
+  </div>
+</div>
+
+
+                   &nbsp;&nbsp; 
+
+
+ <div class="form-group">
+        <input type="text" class="form-control" id="search_text" placeholder="{{ content['search'] }}">
+      </div>
+      <button type="submit" class="btn btn-outline-success"><i class="fa fa-search" aria-hidden="true"></i></button>
+  
+
+    </form>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Try Speaking    <i class="fa fa-microphone" aria-hidden="true"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="output-text"></p>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+
+    &nbsp;&nbsp;
+     <button id="start-button" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-microphone" aria-hidden="true"></i></button>
+    
+            </ul>
+        
+          </div>
+
+        </nav>
+      </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+  </header>
+
+
+  
+    <!-- header section strats -->
+
+
+  
+    <!-- end header section -->
+
+    <!-- end slider section -->
+  </div>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Content on the left side of the column goes here -->
+    </div>
+    
+    <div class="col-md-4">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileInput" name="file">
+                <label class="custom-file-label" for="fileInput"><div id='choosefile'>{{content['choose_file']}}</div></label>
+                <button type="submit" class="btn btn-primary" id="uploadButton">{{content['predict']}}</button>
+            </div>
+        </form>
+        <br>
+    </div>
+     <div class="col-md-8">
+        <!-- Content on the left side of the column goes here -->
+    </div>
+        
+
+</div>
+
+
+
+
+ {% block content %}{% endblock %}
+
+  
+
+
+
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+  
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="footer_items">
+            <div class="row">
+              <div class="col-md-2">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box ">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                 Noida
+                    </p>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box ">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                      +02 1234567890
+                    </p>
+                  </div>
+                </a>
+              </div>
+         
+              <div class="col-md-2">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box">
+                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                      demo@gmail.com
+                    </p>
+                  </div>
+                </a>
+              </div>
+               <div class="col-md-3">
+               </div>
+
+              <div class="col-md-3">
+                    <div class="social-box">
+                 
+                  <div class="row">
+                  <div class="box">
+                    <a href="">
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                      <i class="fa fa-youtube" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                      <i class="fa fa-instagram" aria-hidden="true"></i>
+                    </a>
+                  </div>
+      </div>
+    </div>
+            </div>
+          </div>
+        </div>
+    
+      </div>
+
+      
+    <div class="footer-info">
+      <div class="container">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- footer section -->
+  <!-- jQery -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+      <!-- bootstrap js -->
+  <script src="{{url_for('static', filename='js/bootstrap.js') }}"></script>
+  <!-- custom js -->
+  <script src="{{url_for('static', filename='js/custom.js') }}"></script>
+
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+
+
+<!-- Include the Toastr JavaScript file -->
+<!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.css">
+
+<!-- Toastr JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
+
+<script>
+        
+ $('#fileInput').on('change', function () {
+    // Get the id of the file input that triggered the change event
+    var fileId = $(this).attr('id');
+    
+    // Do something with the file id
+    console.log('File input ID:', fileId);
+    var language_id= $('#dropdownMenuButton').text();
+    console.log(language_id);
+    if(language_id=='\n    ભાષા\n  '){
+        language_id='gujrati'
+        $('#choosefile').html('ફાઇલ અપલોડ કરી. આગાહી માટે તૈયાર');
+    }
+    if(language_id=='\n    Language\n  '){
+        language_id='english'
+        $('#choosefile').html('File Uploaded. Ready for Prediction');
+    }
+    if(language_id=='\n    भाषा\n  '){
+        language_id='hindi'
+        $('#choosefile').html('फ़ाइल अपलोड की गई. भविष्यवाणी के लिए तैयार');
+    }
+ 
+  });
+
+
+$('#uploadForm').submit(function (e) {
+        e.preventDefault(); // Prevent the default form submission
+        var formData = new FormData();
+        formData.append('file', $('#fileInput')[0].files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/upload',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              console.log(response);
+                 $('#choosefile').html('Choose File');
+              if (response['status'] == 'error') {
+                toastr.error(response['message']);
+              }
+              else{
+
+                 const mains=response['data']
+
+
+
+              
+                const formattedArray = response['data'].map(obj => {
+                  const key = Object.keys(obj)[0];
+                  const value = obj[key];
+                  return `${key}: ${value}`;
+                }).join('\n');
+
+
+            var plant= {'Aloevera':'aloe_vera',  'Curry Leaves':'curry_leaves' , 'Mint':'mint', 'Neem':'neem_leaf', 
+            'Papaya':'papaya_leaves','Pattharchatta':'patharchatta' , 'Tulsi':'tulsi_leaf'}
+// Display the formatted array in an alert
+
+            // const keys = Object.keys(response['data'][0]);
+           
+          
+            const keys = Object.keys(mains[0]);
+              const keyName=keys[0];
+              var language_id= $('#dropdownMenuButton').text();
+              console.log(language_id);
+              if(language_id=='\n    ભાષા\n  '){
+                  language_id='gujrati'
+              }
+              if(language_id=='\n    Language\n  '){
+                  language_id='english'
+              }
+              if(language_id=='\n    भाषा\n  '){
+                  language_id='hindi'
+              }
+    
+             alert(formattedArray);
+            
+             window.location.href = "http://127.0.0.1:5000/profile?plant_name="+plant[keyName]+"&language="+language_id;
+              }
+
+                
+        },
+        error: function(error) {
+            console.error(error);
+            // Handle any errors here
+        }
+        });
+    });
+
+</script>
+
+
+      
+
+</body>
+
+</html>
